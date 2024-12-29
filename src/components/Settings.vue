@@ -56,7 +56,7 @@ export default {
   },
   data() {
     return {
-      userId: '', // 添加用户ID字段
+      userId: 0, // 添加用户ID字段
       personalInfo: {
         username: '', // 将 nickname 替换为 username
         gender: '',

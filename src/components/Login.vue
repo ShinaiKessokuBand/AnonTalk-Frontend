@@ -75,6 +75,10 @@ export default {
 </script>
 
 <style>
+text-style{
+font-family:'CustomFont';
+}
+
 body {
   margin: 0;
   padding: 0;
