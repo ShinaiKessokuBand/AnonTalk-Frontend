@@ -94,6 +94,9 @@
   </script>
   
   <style scoped>
+  text-style{
+font-family:'CustomFont';
+}
   .typewriter {
     position: fixed;
     top: 10px;

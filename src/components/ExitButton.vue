@@ -30,6 +30,9 @@
   </script>
   
   <style scoped>
+  text-style{
+font-family:'CustomFont';
+}
   .exit-button {
     position: fixed;
     bottom: 20px;

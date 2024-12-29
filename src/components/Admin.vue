@@ -88,6 +88,9 @@ export default {
 </script>
 
 <style scoped>
+text-style{
+font-family:'CustomFont';
+}
 .admin {
   padding: 20px;
 }

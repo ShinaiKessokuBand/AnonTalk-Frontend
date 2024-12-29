@@ -86,6 +86,9 @@ export default {
 </script>
 
 <style scoped>
+text-style{
+font-family:'CustomFont';
+}
 .square {
   width: 100vw; /* 占满整个视口宽度 */
   font-size: 20px;

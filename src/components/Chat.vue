@@ -113,6 +113,9 @@ export default {
 </script>
 
 <style scoped>
+text-style{
+font-family:'CustomFont';
+}
 .chat {
   text-align: center;
   margin-top: 50px;

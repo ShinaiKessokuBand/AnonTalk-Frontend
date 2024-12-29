@@ -69,6 +69,9 @@ export default {
 </script>
 
 <style scoped>
+text-style{
+font-family:'CustomFont';
+}
 .home {
   display: flex;
   flex-direction: column;

@@ -120,6 +120,9 @@ export default {
 
   
   <style scoped>
+  text-style{
+font-family:'CustomFont';
+}
   .settings {
     max-width: 800px; /* 修改表单容器的最大宽度 */
     margin: 0 auto;

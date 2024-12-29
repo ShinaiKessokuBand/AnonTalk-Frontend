@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 创建一个 axios 实例
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'http://localhost:8089/api',
   headers: {
     'Content-Type': 'application/json'
   }
