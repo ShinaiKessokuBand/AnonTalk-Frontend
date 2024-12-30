@@ -43,4 +43,14 @@ export const updateUser = async (userId, userData) => {
   }
 };
 
+export const getUserData = async (userId) => {
+  try {
+    const response = await apiClient.get(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error;
+  }
+}
+
 
