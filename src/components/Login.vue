@@ -45,8 +45,8 @@ export default {
           password: this.password
         });
         if (response.data.success) {
-          //localStorage.setItem('currentUserId', response.data.user.id); // 将用户 ID 存储在本地存储中
-          const userId = response.data.user.id;
+          localStorage.setItem('currentUserId', response.data.userid); // 将用户 ID 存储在自己的本地存储中
+          const userId = response.data.userid;
           this.$router.push({ path: '/home', query: { userId } });
         } else {
           alert('用户名或密码错误');

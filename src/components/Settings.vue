@@ -70,12 +70,11 @@ export default {
   },
   async created() {
     // 获取用户ID并设置到data中
-    const currentUserId = localStorage.getItem('currentUserId'); // 假设用户ID存储在localStorage中
+    const currentUserId = localStorage.getItem('currentUserId'); // 假设用户ID存储在用户本地localStorage中
     if (currentUserId) {
       try {
         const userData = await getUserData(currentUserId);
-        this.userId = userData.id;
-        this.personalInfo.username = userData.username; // 将 nickname 替换为 username
+        this.userId = userData.id; // 将 nickname 替换为 username
         this.personalInfo.gender = userData.gender;
         this.personalInfo.hobbies = userData.hobbies;
         this.accountSecurity.phone = userData.phone;
@@ -87,7 +86,7 @@ export default {
   methods: {
     async updatePersonalInfo() {
       const userData = {
-        username: this.personalInfo.username, // 将 nickname 替换为 username
+        username: this.personalInfo.username, 
         gender: this.personalInfo.gender,
         hobbies: this.personalInfo.hobbies
       };
