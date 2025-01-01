@@ -63,8 +63,11 @@ export default {
   async mounted() {
     this.socket = io('http://localhost:8089'); // 替换为你的 WebSocket 服务器地址
     this.socket.on('message', (message) => {
-      this.messages.push({ text: message, isMine: false });
-      console.log('Received message:', message);
+      const [type, text] = message.split(':');
+      if (type === 'msg') {
+        this.messages.push({ text, isMine: false });
+        console.log('Received message:', message);
+      }
     });
 
     //获取历史聊天记录
@@ -82,15 +85,11 @@ export default {
   methods: {
      sendMessage() {
       if (this.newMessage.trim() !== '') {
-        const messageData = {
-          chatId: this.$route.query.user,
-          senderId: this.currentUserId,
-          text: this.newMessage
-        };
+        const messageData = `msg:${this.newMessage}`;
         this.socket.emit('message', messageData);
         this.messages.push({ text: this.newMessage, isMine: true });
         this.newMessage = '';
-      }
+        }
     },
     closeChat() {
       console.log('Closing chat');
