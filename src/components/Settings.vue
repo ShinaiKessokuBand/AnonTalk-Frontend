@@ -86,12 +86,13 @@ export default {
   methods: {
     async updatePersonalInfo() {
       const userData = {
-        username: this.personalInfo.username, 
+        username: this.personalInfo.username,
         gender: this.personalInfo.gender,
         hobbies: this.personalInfo.hobbies
       };
       try {
-        const updatedUser = await updateUser(this.userId, userData);
+        const currentUserId = localStorage.getItem('currentUserId');
+        const updatedUser = await updateUser(currentUserId, userData);
         console.log('更新个人信息:', updatedUser);
         alert('个人信息已更新');
       } catch (error) {
@@ -117,7 +118,7 @@ export default {
 };
 </script>
 
-  
+
   <style scoped>
   text-style{
 font-family:'CustomFont';
@@ -130,13 +131,13 @@ font-family:'CustomFont';
     border-radius: 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   .settings h2 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 30px;
   }
-  
+
   .back-button {
     position: fixed; /* 固定位置 */
     top: 20px; /* 距离顶部 */
@@ -151,34 +152,34 @@ font-family:'CustomFont';
     border: none; /* 移除边框 */
     cursor: pointer;
   }
-  
+
   .back-button:hover {
     background-color: rgba(0, 0, 0, 0.1); /* 添加悬停效果 */
   }
-  
+
   .button-icon {
     width: 24px;
     height: 24px;
     margin-bottom: 5px; /* 图标和文字之间的间距 */
   }
-  
+
   .settings-section {
     margin-bottom: 30px;
   }
-  
+
   .settings-section h3 {
     margin-bottom: 10px;
   }
-  
+
   .form-group {
     margin-bottom: 15px;
   }
-  
+
   .form-group label {
     display: block;
     margin-bottom: 5px;
   }
-  
+
   .form-group input,
   .form-group select {
     width: 100%;
@@ -186,7 +187,7 @@ font-family:'CustomFont';
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-  
+
   button {
     display: block;
     width: 100%;
@@ -197,7 +198,7 @@ font-family:'CustomFont';
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   button:hover {
     background-color: #2980b9;
   }
