@@ -14,11 +14,11 @@
     </div>
     <div class="main-content">
       <div class="buttons-container">
-        <button class="match-button" @click="matchNormalUser">
+        <button class="match-button" @click="matchUser">
           <img src="@/assets/normal-user-icon.png" alt="普通用户匹配" class="button-icon">
           <span>普通用户匹配</span>
         </button>
-        <button class="match-button" @click="matchVipUser">
+        <button class="match-button" @click="matchUser">
           <img src="@/assets/vip-user-icon.png" alt="会员用户匹配" class="button-icon">
           <span>会员用户匹配</span>
         </button>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { matchNormalUser, matchVipUser } from '@/api/match.js';
+//import { matchNormalUser, matchVipUser } from '@/api/match.js';
 import io from 'socket.io-client';
 import ExitButton from '@/components/ExitButton.vue';
 
