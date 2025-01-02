@@ -25,6 +25,11 @@
       </div>
     </div>
     <ExitButton />
+    <div v-if="isMatching" class="overlay">
+      <div class="overlay-content">
+        <h2>匹配等待中...</h2>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -230,5 +235,23 @@ font-family:'CustomFont';
   width: 100px; /* 设置图标宽度 */
   height: 100px; /* 设置图标高度 */
   margin-bottom: 10px; /* 增加图标和文字之间的间距 */
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 确保在页面上层显示 */
+}
+
+.overlay-content {
+  color: white;
+  font-size: 100px;
+  text-align: center;
 }
 </style>
