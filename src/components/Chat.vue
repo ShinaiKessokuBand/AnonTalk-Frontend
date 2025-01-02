@@ -51,38 +51,68 @@ export default {
       messages: [],
       newMessage: '',
       socket: null,
-      currentUserId: localStorage.getItem('currentUserId') 
+      currentUserId: localStorage.getItem('currentUserId')
     }
   },
   computed: {
-   
+
     matchType() {
       return this.$route.query.type
     }
   },
   async mounted() {
-    this.socket = io('http://localhost:8089'); // 替换为你的 WebSocket 服务器地址
+    this.$store.state.socket.onopen = () => {
+      console.log('Chat WebSocket connected.');
+    };
+    /*
     this.socket.on('message', (message) => {
       const [type, text] = message.split(':');
       if (type === 'msg') {
         this.messages.push({ text, isMine: false });
         console.log('Received message:', message);
       }
-    });
+    });*/
+    const receiveMessage = (event) => {
+      const receivedData = event.data;
+      console.log('Received data:', receivedData);
+      const [type, text] = receivedData.split(':');
+      if(type === 'msg') {
+        this.messages.push({ text, isMine: false });
+        console.log('Received message:', text);
+      }
+    }
+    this.$store.state.socket.addEventListener('message', receiveMessage);
+    /*
+    const handleMessage = (event) => {
+      const receivedData = event.data;
+      console.log('Received data:', receivedData);
+      const ret = JSON.parse(receivedData);
+
+      if (ret.success) {
+        this.isMatching = false;
+        const currentUserId = localStorage.getItem('currentUserId');
+        this.$router.push({ path: '/chat', query: { userId: currentUserId } });
+        this.socket.removeEventListener('message', handleMessage); // Stop listening for messages
+      } else {
+        console.log('Waiting for success...');
+      }
+    };
+    this.socket.addEventListener('message', handleMessage);
+    */
 
   },
   methods: {
      sendMessage() {
       if (this.newMessage.trim() !== '') {
         const messageData = `msg:${this.newMessage}`;
-        this.socket.emit(messageData);
+        this.$store.state.socket.send(messageData);
         this.messages.push({ text: this.newMessage, isMine: true });
         this.newMessage = '';
         }
     },
     closeChat() {
       console.log('Closing chat');
-      this.socket.disconnect();
+      this.$store.state.socket.disconnect();
       this.$router.push('/home');
     },
     goToSettings() {
@@ -93,8 +123,8 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.socket) {
-      this.socket.disconnect();
+    if (this.$store.state.socket) {
+      this.$store.state.socket.disconnect();
     }
   }
 }

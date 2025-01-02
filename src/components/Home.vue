@@ -49,12 +49,32 @@ export default {
       isMatching: false
     };
   },
-  created() {
-    const userId = localStorage.getItem('currentUserId');
-    this.socket = new WebSocket('ws://localhost:8089/ws?userId=' + userId);
-    this.socket.onopen = () => {
-      console.log('WebSocket connected.');
-    };
+  created() {/*
+    this.$store.dispatch('connectSocket');
+    this.$watch(
+      () => this.$store.state.socket,
+      (newSocket) => {
+        if (newSocket) {
+          newSocket.onopen = () => {
+            console.log('WebSocket connected.');
+          };
+          newSocket.addEventListener('message', (event) => {
+            const receivedData = event.data;
+            console.log('Received data:', receivedData);
+            const ret = JSON.parse(receivedData);
+            console.log('Received data parsed:', ret);
+            if (ret.success) {
+              this.isMatching = false;
+              const currentUserId = localStorage.getItem('currentUserId');
+              newSocket.removeEventListener('message', handleMessage);
+              this.$router.push({ path: '/chat', query: { userId: currentUserId } });
+            } else {
+              console.log('匹配等待中');
+            }
+          });
+        }
+      }
+    );*/
 /*
     this.socket.addEventListener('message', (event) => {
       const receivedData = event.data;
@@ -93,7 +113,35 @@ export default {
 
   methods: {
     matchUser() {
-      this.socket.send('matchRequest');
+      this.$store.dispatch('connectSocket');
+      this.$watch(
+        () => this.$store.state.socket,
+        (newSocket) => {
+          if (newSocket) {
+            newSocket.send("matchRequest");
+            newSocket.onopen = () => {
+              console.log('WebSocket connected by matchUser.');
+            };
+            this.isMatching = true;
+            const handleMessage = (event) => {
+              const receivedData = event.data;
+              const ret = JSON.parse(receivedData);
+              console.log('Received data:', ret);
+              if (ret.success) {
+                this.isMatching = false;
+                const currentUserId = localStorage.getItem('currentUserId');
+                this.$router.push({path: '/chat', query: {userId: currentUserId}});
+                this.$store.state.socket.removeEventListener('message', handleMessage); // Stop listening for messages
+              } else {
+                console.log('Waiting for success...');
+              }
+            };
+            this.$store.state.socket.addEventListener('message', handleMessage);
+          }
+        }
+      );
+      /*
+      this.$store.state.socket.send('matchRequest');
       this.isMatching = true;
       const handleMessage = (event) => {
         const receivedData = event.data;
@@ -104,12 +152,13 @@ export default {
           this.isMatching = false;
           const currentUserId = localStorage.getItem('currentUserId');
           this.$router.push({ path: '/chat', query: { userId: currentUserId } });
-          this.socket.removeEventListener('message', handleMessage); // Stop listening for messages
+          this.$store.state.socket.removeEventListener('message', handleMessage); // Stop listening for messages
         } else {
           console.log('Waiting for success...');
         }
       };
-      this.socket.addEventListener('message', handleMessage);
+      this.$store.state.socket.addEventListener('message', handleMessage);
+      */
     },
     goToSettings() {
       this.$router.push('/settings');
@@ -118,11 +167,6 @@ export default {
       this.$router.push('/square');
     }
   },
-  beforeDestroy() {
-    if (this.socket) {
-      this.socket.disconnect();
-    }
-  }
 }
 </script>
 
