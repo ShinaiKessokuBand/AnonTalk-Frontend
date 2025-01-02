@@ -1,5 +1,9 @@
 <template>
   <div class="settings">
+    <button class="back-button" @click="goBack">
+      <img src="@/assets/back-icon.png" alt="返回" class="button-icon">
+      <span>返回</span>
+    </button>
     <h2>个人设置</h2>
     <div class="settings-section">
       <h3>个人信息</h3>
@@ -114,6 +118,9 @@ export default {
         console.error('Error updating account security:', error);
         alert('更新账号安全设置失败，请重试');
       }
+    },
+    goBack() {
+      this.$router.go(-1);
     }
   }
 };
@@ -202,5 +209,28 @@ font-family:'CustomFont';
 
   button:hover {
     background-color: #2980b9;
+  }
+
+  .back-button {
+    position: fixed; /* 固定位置 */
+    top: 20px; /* 距离顶部 */
+    left: 20px; /* 距离左边缘 */
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+    align-items: center;
+    background: none; /* 移除背景颜色 */
+    border: none; /* 移除边框 */
+    cursor: pointer;
+  }
+
+  .back-button:hover {
+    color: #2980b9;
+  }
+
+  .button-icon {
+    width: 80px;
+    font-size: 80px;
+    height: 80px;
+    margin-bottom: 5px; /* 图标和文字之间的间距 */
   }
   </style>
