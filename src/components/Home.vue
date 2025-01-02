@@ -119,9 +119,7 @@ export default {
         (newSocket) => {
           if (newSocket) {
             newSocket.send("matchRequest");
-            newSocket.onopen = () => {
-              console.log('WebSocket connected by matchUser.');
-            };
+            console.log('WebSocket connected by matchUser.');
             this.isMatching = true;
             const handleMessage = (event) => {
               const receivedData = event.data;

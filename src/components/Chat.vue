@@ -75,8 +75,8 @@ export default {
       const [type, text] = receivedData.split(':');
       if(type === 'msg') {
         this.messages.push({ text, isMine: false });
-        console.log('Received message:', text);
-        console.log("message count:", this.messages.length);
+        console.log('Current messages length:', this.messages.length);
+        console.log('Received message:', text);//TODO: 显示接受的消息
       }
     }
     this.$store.state.socket.addEventListener('message', receiveMessage);

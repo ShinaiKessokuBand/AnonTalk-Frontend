@@ -44,35 +44,51 @@ export default {
         content: ''
       },
       posts: [
-        // { title: '帖子1', content: '这是第一个帖子内容。' },
-        // { title: '帖子2', content: '这是第二个帖子内容。' },
-        // { title: '帖子3', content: '这是第三个帖子内容。' },
-        // { title: '帖子4', content: '这是第四个帖子内容。' },
-        // { title: '帖子5', content: '这是第五个帖子内容。' }
+        { title: 'buaa新北b1为什么没有番茄猪肚鸡了', content: '我真的好想吃番茄猪肚鸡！！！！！欺负烤漆大学生！！' },
+        { title: '概统好难', content: '学了就忘' },
+        { title: '交友', content: '评论区dd我' },
+        { title: '谁是最可爱的宝宝', content: '当然是537是最可爱的小兔了' },
+        { title: '人 你们好', content: '其实我就是乌萨奇'}
       ]
     };
   },
-  async created() {
-    this.posts = await getAllPosts();
-  },
+//   async created() {
+//     this.posts = await getAllPosts();
+//   },
+//   methods: {
+//    async submitPost() {
+//       if (this.newPost.title && this.newPost.content) {
+//         // this.posts.push({ ...this.newPost });
+//         // this.newPost.title = '';
+//         // this.newPost.content = '';
+//         const postData = {
+//           ...this.newPost,
+//           userid: localStorage.getItem('currentUserId') // 假设用户名存储在 localStorage 中
+//         };
+//         try {
+//           const newPost = await createPost(postData);
+//           this.posts.push(newPost);
+//           this.newPost.title = '';
+//           this.newPost.content = '';
+//         } catch (error) {
+//           console.error('Error creating post:', error);
+//         }
+//       }
+//     },
+//     viewPost(post) {
+//       this.$router.push({ name: 'PostDetail', params: { post } });
+//     },
+//     goBack() {
+//       this.$router.go(-1);
+//     }
+//   }
+// }
   methods: {
-   async submitPost() {
+    submitPost() {
       if (this.newPost.title && this.newPost.content) {
-        // this.posts.push({ ...this.newPost });
-        // this.newPost.title = '';
-        // this.newPost.content = '';
-        const postData = {
-          ...this.newPost,
-          userid: localStorage.getItem('currentUserId') // 假设用户名存储在 localStorage 中
-        };
-        try {
-          const newPost = await createPost(postData);
-          this.posts.push(newPost);
-          this.newPost.title = '';
-          this.newPost.content = '';
-        } catch (error) {
-          console.error('Error creating post:', error);
-        }
+        this.posts.push({ ...this.newPost });
+        this.newPost.title = '';
+        this.newPost.content = '';
       }
     },
     viewPost(post) {
