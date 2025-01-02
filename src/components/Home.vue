@@ -40,16 +40,26 @@ export default {
   },
   data() {
     return {
-      socket: null
+      socket: null,
+      isMatching: false
     };
   },
   created() {
     this.socket = io('http://localhost:8089'); 
     this.socket.on('matchResponse', (response) => {
-      if (response.data.data.success) {
-        this.$router.push('/chat');
-      } else {
-        alert('匹配失败，请重试');
+      try {
+        const data = JSON.parse(response);
+        if (data.data.success) {
+          const currentUserId = localStorage.getItem('currentUserId');
+          this.$router.push({ path: '/chat', query: { userId: currentUserId } });
+        }
+        else {
+          alert("匹配等待中");
+          this.isMatching = true;
+        }
+      } catch (error) {
+        console.error('Failed to parse response:', error);
+        alert("匹配失败");
       }
     });
   },
@@ -57,6 +67,7 @@ export default {
   methods: {
     matchUser() {
       this.socket.emit('matchRequest');
+      this.isMatching = true;
     },
     goToSettings() {
       this.$router.push('/settings');

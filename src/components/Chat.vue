@@ -75,7 +75,7 @@ export default {
      sendMessage() {
       if (this.newMessage.trim() !== '') {
         const messageData = `msg:${this.newMessage}`;
-        this.socket.emit('message', messageData);
+        this.socket.emit(messageData);
         this.messages.push({ text: this.newMessage, isMine: true });
         this.newMessage = '';
         }
