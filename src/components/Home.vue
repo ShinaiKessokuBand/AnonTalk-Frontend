@@ -30,6 +30,7 @@
 
 <script>
 import { matchNormalUser, matchVipUser } from '@/api/match.js';
+import io from 'socket.io-client';
 import ExitButton from '@/components/ExitButton.vue';
 
 export default {
@@ -37,32 +38,36 @@ export default {
   components: {
     ExitButton
   },
+  data() {
+    return {
+      socket: null
+    };
+  },
+  created() {
+    this.socket = io('http://localhost:8089'); 
+    this.socket.on('matchResponse', (response) => {
+      if (response.data.data.success) {
+        this.$router.push('/chat');
+      } else {
+        alert('匹配失败，请重试');
+      }
+    });
+  },
+ 
   methods: {
-    async matchNormalUser() {
-      try {
-        const matchedUser = await matchNormalUser();
-        this.$router.push({ path: '/chat', query: { type: 'normal', user: matchedUser.id } });
-      } catch (error) {
-        console.error('Error matching normal user:', error);
-        alert('匹配失败，请重试');
-      }
-    },
-    async matchVipUser() {
-      try {
-        const matchedUser = await matchVipUser();
-        this.$router.push({ path: '/chat', query: { type: 'vip', user: matchedUser.id } });
-      } catch (error) {
-        console.error('Error matching VIP user:', error);
-        alert('匹配失败，请重试');
-      }
+    matchUser() {
+      this.socket.emit('matchRequest');
     },
     goToSettings() {
-      // 跳转到个人设置页面
-      this.$router.push('/settings')
+      this.$router.push('/settings');
     },
     goToSquare() {
-      // 跳转到交友广场页面
-      this.$router.push('/square')
+      this.$router.push('/square');
+    }
+  },
+  beforeDestroy() {
+    if (this.socket) {
+      this.socket.disconnect();
     }
   }
 }

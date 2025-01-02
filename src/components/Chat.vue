@@ -70,17 +70,6 @@ export default {
       }
     });
 
-    //获取历史聊天记录
-    const chatId = this.$route.query.user;
-    try {
-      const history = await getChatHistory(chatId);
-      this.messages = history.map(msg => ({
-        text: msg.text,
-        isMine: msg.senderId === this.currentUserId // 使用当前用户的 ID 进行判断
-      }));
-    } catch (error) {
-      console.error('Error fetching chat history:', error);
-    }
   },
   methods: {
      sendMessage() {
