@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { getUserData, updateUser } from '@/api/user.js';
+import {getUserData, updateUser, updateUserSecurity} from '@/api/user.js';
 import ExitButton from '@/components/ExitButton.vue';
 
 export default {
@@ -106,7 +106,8 @@ export default {
         phone: this.accountSecurity.phone
       };
       try {
-        const updatedUser = await updateUser(this.userId, userData);
+        const currentUserId = localStorage.getItem('currentUserId');
+        const updatedUser = await updateUserSecurity(currentUserId, userData);
         console.log('更新账号安全设置:', updatedUser);
         alert('账号安全设置已更新');
       } catch (error) {

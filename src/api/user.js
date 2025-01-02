@@ -43,6 +43,16 @@ export const updateUser = async (userId, userData) => {
   }
 };
 
+export const updateUserSecurity = async (userId, userData) => {
+  try {
+    const response = await apiClient.put(`/userSecurity/${userId}`, userData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating userSecurity:', error);
+    throw error;
+  }
+};
+
 export const getUserData = async (userId) => {
   try {
     const response = await apiClient.get(`/users/${userId}`);
