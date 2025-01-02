@@ -63,7 +63,7 @@ export default {
         // this.newPost.content = '';
         const postData = {
           ...this.newPost,
-          username: localStorage.getItem('currentUserId') // 假设用户名存储在 localStorage 中
+          userid: localStorage.getItem('currentUserId') // 假设用户名存储在 localStorage 中
         };
         try {
           const newPost = await createPost(postData);

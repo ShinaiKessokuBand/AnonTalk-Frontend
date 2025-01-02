@@ -50,10 +50,32 @@ export default {
     };
   },
   created() {
-    this.socket = io('http://localhost:8089'); 
-    this.socket.on('matchResponse', (response) => {
+    const userId = localStorage.getItem('currentUserId');
+    this.socket = new WebSocket('ws://localhost:8089/ws?userId=' + userId);
+    this.socket.onopen = () => {
+      console.log('WebSocket connected.');
+    };
+/*
+    this.socket.addEventListener('message', (event) => {
+      const receivedData = event.data;
+      console.log('Received data:', receivedData);
+      // Handle the received data here
+      const ret = JSON.parse(receivedData);
+      console.log('Received data parsed:', ret);
+      if(ret.success) {
+        this.isMatching = false;
+        const currentUserId = localStorage.getItem('currentUserId');
+        this.socket.removeEventListener('message', handleMessage);
+        this.$router.push({ path: '/chat', query: { userId: currentUserId } });
+      }
+      else {
+        console.log('匹配等待中');
+      }
+    });*/
+   /* this.socket.on('matchResponse', (response) => {
       try {
         const data = JSON.parse(response);
+        console.log('Received match response:', data);
         if (data.data.success) {
           const currentUserId = localStorage.getItem('currentUserId');
           this.$router.push({ path: '/chat', query: { userId: currentUserId } });
@@ -66,13 +88,28 @@ export default {
         console.error('Failed to parse response:', error);
         alert("匹配失败");
       }
-    });
+    });*/
   },
- 
+
   methods: {
     matchUser() {
-      this.socket.emit('matchRequest');
+      this.socket.send('matchRequest');
       this.isMatching = true;
+      const handleMessage = (event) => {
+        const receivedData = event.data;
+        console.log('Received data:', receivedData);
+        const ret = JSON.parse(receivedData);
+
+        if (ret.success) {
+          this.isMatching = false;
+          const currentUserId = localStorage.getItem('currentUserId');
+          this.$router.push({ path: '/chat', query: { userId: currentUserId } });
+          this.socket.removeEventListener('message', handleMessage); // Stop listening for messages
+        } else {
+          console.log('Waiting for success...');
+        }
+      };
+      this.socket.addEventListener('message', handleMessage);
     },
     goToSettings() {
       this.$router.push('/settings');
