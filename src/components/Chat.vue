@@ -20,7 +20,7 @@
           <span>聊天</span>
           <button @click="closeChat">X</button>
         </div>
-        <div class="chat-content">
+        <div class="chat-content" ref="chatContent">
           <div v-for="(message, index) in messages" :key="index" :class="{'my-message': message.isMine, 'other-message': !message.isMine}">
             {{ message.text }}
           </div>
@@ -29,7 +29,6 @@
           <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="输入消息...">
           <button @click="sendMessage">发送</button>
         </div>
-        <button @click="loadChatHistory">聊天记录</button>
       </div>
     </div>
     <ExitButton />
@@ -37,8 +36,6 @@
 </template>
 
 <script>
-import io from 'socket.io-client';
-import { getChatHistory } from '@/api/chat.js';
 import ExitButton from '@/components/ExitButton.vue';
 
 export default {
@@ -74,11 +71,12 @@ export default {
     });*/
     const receiveMessage = (event) => {
       const receivedData = event.data;
-      console.log('Received data:', receivedData);
+    //  console.log('Received data:', receivedData);
       const [type, text] = receivedData.split(':');
       if(type === 'msg') {
         this.messages.push({ text, isMine: false });
         console.log('Received message:', text);
+        console.log("message count:", this.messages.length);
       }
     }
     this.$store.state.socket.addEventListener('message', receiveMessage);
@@ -102,12 +100,19 @@ export default {
 
   },
   methods: {
+    scrollToBottom() {
+      const chatContent = this.$refs.chatContent;
+      chatContent.scrollTop = chatContent.scrollHeight;
+    },
      sendMessage() {
       if (this.newMessage.trim() !== '') {
         const messageData = `msg:${this.newMessage}`;
         this.$store.state.socket.send(messageData);
         this.messages.push({ text: this.newMessage, isMine: true });
         this.newMessage = '';
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        })
         }
     },
     closeChat() {
